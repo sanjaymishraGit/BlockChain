@@ -95,12 +95,29 @@ UpdateExperienceSummary: function(){
   }).then(function(priorExperienceCount){
     
     //TODO: need to loop here.
-    return cvInstance.getPriorExperience(0);
+    var experiences= [];
+    for (var i=0;i<priorExperienceCount;i++)
+    {
+      var result = cvInstance.getPriorExperience(i);
+      //console.log(result);
+      experiences.push(result);
+      
+    }
+   return experiences;
 
-  }).then(function(priorExperience){
-
-    App.fillSummaryDetails(priorExperience);
+  }).then(function(experiences){
+    console.log(experiences);
+    
+    App.fillExperience(experiences);
   })
+ },
+
+ fillExperience(experiences){
+   //TODO: need to look here
+  experiences.forEach(element => {
+    //console.log(element);
+    //App.fillSummaryDetails(element);
+  });
  },
 
  fillSummaryDetails:function(priorExperience){
@@ -114,7 +131,7 @@ UpdateExperienceSummary: function(){
    document.getElementById("responsibilities").innerHTML= priorExperience[6];  
 
 
- }
+ },
   
 
 };
