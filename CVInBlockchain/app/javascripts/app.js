@@ -41,7 +41,7 @@ window.App = {
 
       App.basicInfoUpdate();
       App.UpdateExperienceSummary();   
-   //   App.multiplyNode(document.getElementById("experience"), priorExperienceCount, true);
+  
       
 
 //App.listenToEvents();     
@@ -92,46 +92,52 @@ UpdateExperienceSummary: function(){
   myCV.deployed().then(function(instance){
     cvInstance = instance;
     return cvInstance.getPriorExperienceCount();
-  }).then(function(priorExperienceCount){
-    
-    //TODO: need to loop here.
+  }).then(function(priorExperienceCount){  
+   
     var experiences= [];
-    for (var i=0;i<priorExperienceCount;i++)
+    for (var i=0; i<priorExperienceCount; i++)
     {
       var result = cvInstance.getPriorExperience(i);
-      //console.log(result);
       experiences.push(result);
       
     }
    return experiences;
 
   }).then(function(experiences){
-    console.log(experiences);
-    
-    App.fillExperience(experiences);
+    Promise.all(experiences).then(values => { 
+      App.fillExperiences(values);
+    });    
   })
  },
 
- fillExperience(experiences){
-   //TODO: need to look here
-  experiences.forEach(element => {
-    //console.log(element);
-    //App.fillSummaryDetails(element);
+ fillExperiences(experiences){
+
+  experiences.forEach(priorExperience => {
+    console.log(priorExperience);
+    App.fillExperienceDetails(priorExperience);
+    //App.multiplyNode(document.getElementById("experience"));
   });
  },
 
- fillSummaryDetails:function(priorExperience){
-   console.log(priorExperience);
+ fillExperienceDetails:function(priorExperience){
    document.getElementById("companylogo").src= priorExperience[0];
    document.getElementById("companyName").innerHTML= priorExperience[1];
    document.getElementById("role").innerHTML= priorExperience[2];
    document.getElementById("from").innerHTML= priorExperience[3];
    document.getElementById("to").innerHTML= priorExperience[4];
    document.getElementById("address").innerHTML= priorExperience[5];
-   document.getElementById("responsibilities").innerHTML= priorExperience[6];  
+   document.getElementById("responsibilities").innerHTML= priorExperience[6];
+   
+   var experienceNode = document.getElementById("experience");
+   var cloneNode = experienceNode.cloneNode(true);  
+   experienceNode.parentNode.insertBefore(cloneNode, experienceNode);
+  
+  },
 
-
- },
+ multiplyNode: function(node) {
+    var copy = node.cloneNode(true);
+    node.parentNode.insertBefore(copy, node);  
+},
   
 
 };
