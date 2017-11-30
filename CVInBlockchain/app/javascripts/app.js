@@ -39,7 +39,8 @@ window.App = {
       accounts = accs;
       account = accounts[0];
 
-      App.basicInfoUpdate();   
+      App.basicInfoUpdate();
+      App.UpdateExperienceSummary();   
    //   App.multiplyNode(document.getElementById("experience"), priorExperienceCount, true);
       
 
@@ -86,25 +87,32 @@ window.App = {
     }
 },
 
-// UpdateExperienceSummary: function(){
-//   var cvInstance;
-//   myCV.deployed().then(function(instance){
-//     cvInstance = instance;
-//     return cvInstance.getPriorExperienceCount();
-//   }).then(function(priorExperienceCount){
+UpdateExperienceSummary: function(){
+  var cvInstance;
+  myCV.deployed().then(function(instance){
+    cvInstance = instance;
+    return cvInstance.getPriorExperienceCount();
+  }).then(function(priorExperienceCount){
     
-//     //TODO: need to loop here.
-//     return cvInstance.getPriorExperience(0);
+    //TODO: need to loop here.
+    return cvInstance.getPriorExperience(0);
 
-//   }).then(function(priorExperience){
-//     App.fillSummaryDetails(priorExperience);
-//   })
-//  },
+  }).then(function(priorExperience){
+
+    App.fillSummaryDetails(priorExperience);
+  })
+ },
 
  fillSummaryDetails:function(priorExperience){
    console.log(priorExperience);
-   document.getElementById("companylogo").src= priorExperience.companyLogo;
-   document.getElementById("role").innerHTML= priorExperience.Role;
+   document.getElementById("companylogo").src= priorExperience[0];
+   document.getElementById("companyName").innerHTML= priorExperience[1];
+   document.getElementById("role").innerHTML= priorExperience[2];
+   document.getElementById("from").innerHTML= priorExperience[3];
+   document.getElementById("to").innerHTML= priorExperience[4];
+   document.getElementById("address").innerHTML= priorExperience[5];
+   document.getElementById("responsibilities").innerHTML= priorExperience[6];  
+
 
  }
   

@@ -1,8 +1,8 @@
 pragma solidity ^0.4.15;
 
-import "./CVExtender.sol";
+//import "./CVExtender.sol";
 
-contract CV is CVExtender {
+contract CV  {
 
     /**
      * Your functions go here
@@ -123,7 +123,7 @@ contract CV is CVExtender {
     }
     
     function createSiemensWorkExperience() private{
-        Experience experience;
+        Experience memory experience;
         experience.CompanyLogo= "https://media.licdn.com/mpr/mpr/shrink_100_100/p/4/000/172/18e/247b463.png";
         experience.EmployeerName="Siemens Technology India";
         experience.Role = "Technical Expert";
@@ -136,7 +136,7 @@ contract CV is CVExtender {
     }
     
      function createSiemensHealthineersWorkExperience() private{
-        Experience experience;
+        Experience memory experience;
         experience.CompanyLogo= "https://media.licdn.com/mpr/mpr/shrink_200_200/AAIABADGAAAAAQAAAAAAAAw6AAAAJGZjNWE5MWRjLTMxNDMtNGU5Ni1iYTA0LWM5ZjIzNDc5NmVjNQ.png";
         experience.EmployeerName="Siemens Healthineer";
         experience.Role = "Software Architect";
@@ -149,7 +149,7 @@ contract CV is CVExtender {
     }
     
     function createDAEWorkExperience() private{
-        Experience experience;
+        Experience memory experience;
         experience.CompanyLogo= "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOXLOrlgVda5-a5KukgqTLY9gAUc206n8N7xK9ZX1S4ETtFNUr";
         experience.EmployeerName="Department of Atomic Energy";
         experience.Role = "Scientist";
