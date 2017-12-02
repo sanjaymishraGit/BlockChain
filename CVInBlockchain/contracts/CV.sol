@@ -29,11 +29,21 @@ contract CV  {
 	     string Address;
          string Responsibility;
      }
+     
+     struct SkillSet{
+         string SkillName;
+         string SkillExperience;
+         string Maturity;
+         
+     }
+    
 
     
     Summary myWorkSummary;
     mapping(uint=>Experience) myWorkExperience;
+    mapping(uint=> SkillSet) mySkillSet;
     uint myExperienceCount;
+    uint mySkillCount;
     
     
      function getPhoto() public constant returns(string) {
@@ -84,8 +94,15 @@ contract CV  {
         myWorkExperience[companyID].DurationTo,
         myWorkExperience[companyID].Address,
         myWorkExperience[companyID].Responsibility);
-        
-    }   
+    }
+    
+    function getSkillCount() public constant returns(uint){
+        return mySkillCount;
+    }
+    
+    function getSkilSet(uint skillID) public constant returns(string, string, string){
+        return(mySkillSet[skillID].SkillName,mySkillSet[skillID].SkillExperience,mySkillSet[skillID].Maturity);
+    }
     
     
     
@@ -96,6 +113,7 @@ contract CV  {
         createDAEWorkExperience();
         createSiemensHealthineersWorkExperience();
         createSiemensWorkExperience();
+        createSkillSet();
         
     }
     
@@ -160,6 +178,47 @@ contract CV  {
         updateWorkExperience(experience);
         myExperienceCount++;
     }
+    
+    function createSkillSet() private {
+     CreateProgrammingSkillSet();
+     CreateTechnologySkillSet();
+     CreateArchitectureAndDesignSkillSet();
+     
+    }
+    
+    function updateSkillSet(SkillSet skillset) private{
+        mySkillSet[mySkillCount].SkillName = skillset.SkillName;
+        mySkillSet[mySkillCount].SkillExperience = skillset.SkillExperience;
+        mySkillSet[mySkillCount].Maturity = skillset.Maturity;
+    }
+    
+    function CreateProgrammingSkillSet() private{
+        SkillSet memory skillSet;
+        skillSet.SkillName= "Programming Languages";
+        skillSet.SkillExperience="C#,JavaScript, Angular JS, Node JS, Python, Solidity";
+        skillSet.Maturity = "Expert- I am keep on improving on these skills but  Can Guide Projects";
+        updateSkillSet(skillSet);
+        mySkillCount++;
+    }
+    
+    function CreateTechnologySkillSet() private{
+        SkillSet memory skillSet;
+        skillSet.SkillName= "Technologies";
+        skillSet.SkillExperience="Web, BlockChain, Machine Learning, DevOps, OPC-UA,IOT";
+        skillSet.Maturity = "Expert- I am keep on improving on these skills but  Can Guide Projects";
+        updateSkillSet(skillSet);
+        mySkillCount++;
+    }
+    
+    function CreateArchitectureAndDesignSkillSet() private{
+        SkillSet memory skillSet;
+        skillSet.SkillName= "Architecture and Design";
+        skillSet.SkillExperience="Software Architecture, Requirement Engineering, Design, Devops, Team Empowerment, Enterpriship, Ownership";
+        skillSet.Maturity = "Expert- I am keep on improving on these skills but  Can Guide Projects";
+        updateSkillSet(skillSet);
+        mySkillCount++;
+    }
+    
 
 
     /**

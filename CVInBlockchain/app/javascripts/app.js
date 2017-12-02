@@ -40,7 +40,8 @@ window.App = {
       account = accounts[0];
 
       App.basicInfoUpdate();
-      App.UpdateExperienceSummary();   
+      App.UpdateExperienceSummary();
+      App.updateSkillSet();   
   
       
 
@@ -52,7 +53,7 @@ window.App = {
     var cvInstance; 
     myCV.deployed().then(function(instance) { 
       cvInstance= instance;
-     // document.getElementById("cvAddress").innerHTML= cvInstance.address;
+      document.getElementById("cvAddress").innerHTML= cvInstance.address;
       return instance.getPhoto();
     }).then(function(photo) {
       document.getElementById("photo").src= photo;
@@ -92,8 +93,12 @@ UpdateExperienceSummary: function(){
   myCV.deployed().then(function(instance){
     cvInstance = instance;
     return cvInstance.getPriorExperienceCount();
-  }).then(function(priorExperienceCount){  
-   
+  }).then(function(priorExperienceCount){ 
+
+    for(var i=0;i<priorExperienceCount-1;i++)
+    {
+      App.creteMoreDiv("experience",i);
+    }
     var experiences= [];
     for (var i=0; i<priorExperienceCount; i++)
     {
@@ -110,35 +115,88 @@ UpdateExperienceSummary: function(){
   })
  },
 
- fillExperiences(experiences){
+ creteMoreDiv: function(divName, divsubid){
+  var experienceNode = document.getElementById(divName+divsubid);
+  var cloneNode = experienceNode.cloneNode(true); 
+  cloneNode.id = divName+(divsubid+1);
+  experienceNode.parentNode.insertBefore(cloneNode, experienceNode);
+},
 
-  experiences.forEach(priorExperience => {
-    console.log(priorExperience);
-    App.fillExperienceDetails(priorExperience);
-    //App.multiplyNode(document.getElementById("experience"));
+ fillExperiences(experiences){
+  var i=0;
+   experiences.forEach(priorExperience => {
+   App.fillExperienceDetails(priorExperience, "experience"+i);
+   i++;
+
   });
  },
 
- fillExperienceDetails:function(priorExperience){
-   document.getElementById("companylogo").src= priorExperience[0];
-   document.getElementById("companyName").innerHTML= priorExperience[1];
-   document.getElementById("role").innerHTML= priorExperience[2];
-   document.getElementById("from").innerHTML= priorExperience[3];
-   document.getElementById("to").innerHTML= priorExperience[4];
-   document.getElementById("address").innerHTML= priorExperience[5];
-   document.getElementById("responsibilities").innerHTML= priorExperience[6];
-   
-   var experienceNode = document.getElementById("experience");
-   var cloneNode = experienceNode.cloneNode(true);  
-   experienceNode.parentNode.insertBefore(cloneNode, experienceNode);
+ fillExperienceDetails:function(priorExperience, containerID){
   
+   App.getElementInsideContainer(containerID,"companylogo").src= priorExperience[0];  
+   App.getElementInsideContainer(containerID,"companyName").innerHTML= priorExperience[1];
+   App.getElementInsideContainer(containerID,"role").innerHTML= priorExperience[2];
+   App.getElementInsideContainer(containerID,"from").innerHTML= priorExperience[3];
+   App.getElementInsideContainer(containerID,"to").innerHTML= priorExperience[4];
+   App.getElementInsideContainer(containerID,"address").innerHTML= priorExperience[5];
+   App.getElementInsideContainer(containerID,"responsibilities").innerHTML= priorExperience[6];
+   
   },
 
- multiplyNode: function(node) {
-    var copy = node.cloneNode(true);
-    node.parentNode.insertBefore(copy, node);  
+  getElementInsideContainer: function (containerID, childID) {
+    var elm = {};
+    var elms = document.getElementById(containerID).getElementsByTagName("*");
+    for (var i = 0; i < elms.length; i++) {
+        if (elms[i].id === childID) {
+            elm = elms[i];
+            break;
+        }
+    }
+    return elm;
 },
+
+updateSkillSet: function(){
+  var cvInstance;
+  myCV.deployed().then(function(instance){
+    cvInstance = instance;
+    return cvInstance.getSkillCount();
+  }).then(function(skillsCount){ 
+
+    for(var i=0;i<skillsCount-1;i++)
+    {
+      App.creteMoreDiv("skill", i);
+    }
+    var skills= [];
+    for (var i=0; i<skillsCount; i++)
+    {
+      var result = cvInstance.getSkilSet(i);
+      skills.push(result);
+      
+    }
+   return skills;
+
+  }).then(function(skills){
+    Promise.all(skills).then(values => { 
+      App.fillSkills(values);
+    });    
+  })
+ },
+
+ fillSkills(skills){
+  var i=0;
+  skills.forEach(skill => {
+   App.fillSkillDetails(skill, "skill"+i);
+   i++;
+
+  });
+ },
+ fillSkillDetails:function(skill, containerID){
   
+   App.getElementInsideContainer(containerID,"skillName").innerHTML= skill[0];  
+   App.getElementInsideContainer(containerID,"skillExperience").innerHTML= skill[1];
+   App.getElementInsideContainer(containerID,"maturity").innerHTML= skill[2];
+    
+  },
 
 };
 
